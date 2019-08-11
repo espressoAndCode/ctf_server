@@ -13,6 +13,7 @@ const router      = require('express').Router();
 const auth        = require('../auth');
 const generateJWT = require('../../utils/generateJWT');
 const User        = require('../../models').User;
+// const Users        = require('../../config/users');
 
 const userSchema = Joi.object().keys({
 	username: Joi.string().alphanum().min(3).max(30).optional(),
@@ -80,6 +81,7 @@ router.get('/list', (req, res, next) => {
 
 		return res.status(200).json(
 			JSON.stringify( users )
+			// "Hello"
 		);
 	})
 
