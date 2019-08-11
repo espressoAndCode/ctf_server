@@ -1,0 +1,5 @@
+ctf server notes
+
+https://github.com/app-generator/nodejs-starter
+
+https://sequelize.org/master/manual/getting-started.html
