@@ -76,14 +76,33 @@ router.post('/signup', auth.optional, async (req, res /*, next*/) => {
 /* GET list route */
 router.get('/list', (req, res, next) => {
 	console.log("in the GET function");
+	const jeopardyScores = [{
+					"DC864": [
+							10, 10, 35, 25, 50
+					],
+					"NSA": [
+							10, 10
+					],
 
-	User.findAll().then(users => {
+					"KGB": [
+							50, 25, 20, 15
+					],
 
-		return res.status(200).json(
-			JSON.stringify( users )
-			// "Hello"
-		);
-	})
+					"Acid Burn": [10, 10, 35, 45, 60]
+			}]
+
+	return res.status(200).json(JSON.stringify(jeopardyScores));
+
+
+
+
+	// User.findAll().then(users => {
+
+	// 	return res.status(200).json(
+	// 		JSON.stringify( users )
+	// 		// "Hello"
+	// 	);
+	// })
 
 });
 
