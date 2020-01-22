@@ -1,7 +1,7 @@
 {
     "KO001":  {
       "score":          5,
-      "path":   "http://path/to/this/server/score.html"
+      "path":   "http://127.0.0.1:9000/index.html"
     },
     "JE001":  {
       "score":          5,

@@ -1,5 +1,6 @@
 from threading import Timer
-import os, json, requests
+import os, json, requests, re
+
 
 target_paths = os.path.join(
     os.path.dirname(__file__),'..' , 'data/target_db.json')
@@ -20,14 +21,14 @@ def get_scores():
           URL = res[target]['path']
           points = res[target]['score']
           # poll the game machine for flag
-          # res = requests.get(url=URL)
+          res = requests.get(url=URL)
+          body = res.text
 
-          # parse the 'res' data here to get player info
-          player = "DC864" #mock data
-
+          print("res - ", res.text)
+        # parse the 'res' data here to get player info
+          player = parse_koth_flag(body)
           if (player != ''):
             updates.append([player, target, points])
-
       if len(updates) > 0:
         post(updates)
 
@@ -37,7 +38,7 @@ def get_scores():
 
 def post(updates):
   print("updates: ", updates)
-
+  new_scores = ''
   with open(scoring_path, 'r') as rf:
     file = rf.read()
     if len(file) > 0:
@@ -52,32 +53,42 @@ def post(updates):
           for j in player_obj:
             found = False
             if j[0] == i[1]: #a score for this machine already exists for this player
-              j[2] += 1
-              score = i[2] * j[2]
+              print('exists')
+              j[1] += 1
+              score = i[2] * j[1]
               found = True
               break
           if found == False:
             player_obj.append([i[1], i[2], 1])
             score = i[2]
 
-        current_score[i[0]]['KO'][0] += score
-        print(score)
+          current_score[i[0]]['KO'][0] = score
+          # print(current_score[i[0]]['KO'][0])
+      new_scores = json.dumps(current_score)
+
 
 
     else:
       pass #score_db does not exist or is empty - need to create and append updates
 
 
-    # TODO:
-    #   Create an object that holds ALL existing and updated scores
-    #   once all updates are recorded, call write_scores_to_file with it as argument
-        # so we are only writing the file once
+    print("current score = ", current_score)
+    write_scores_to_file(new_scores)
+
 
 
 
 def write_scores_to_file(scores):
-  pass
-  # with open(scoring_path, 'w') as wf:
-  #   wf.write(json.dumps(scores))
+    with open(scoring_path, 'w') as wf:
+      wf.write(scores)
 
-get_scores()
+
+def parse_koth_flag(body):
+  # iterate through the endpoints
+  # get the html
+  team = re.search(r'<koth>(.*?)</koth>', body).group(1)
+  print("Team: ", team)
+  return team
+
+
+# get_scores()
