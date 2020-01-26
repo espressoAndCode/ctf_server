@@ -1,13 +1,16 @@
 {
-    "KO001":  {
-      "score":          5,
-      "path":   "http://127.0.0.1:9000/index.html"
-    },
-    "JE001":  {
-      "score":          5,
-      "instructions":   "Solve this crypto problem: PNCGHER GUR SYNT",
-      "hint":           "ROT13",
-      "solution":       "CAPTURE THE FLAG"
-    }
-
+  "KO001": {
+    "score": 5,
+    "path": "http://127.0.0.1:9000/index.html"
+  },
+  "KO007": {
+    "score": 20,
+    "path": "http://127.0.0.1:9001/index.html"
+  },
+  "JE001": {
+    "score": 5,
+    "instructions": "Solve this crypto problem: PNCGHER GUR SYNT",
+    "hint": "ROT13",
+    "solution": "CAPTURE THE FLAG"
   }
+}

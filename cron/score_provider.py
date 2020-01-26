@@ -7,7 +7,6 @@ target_paths = os.path.join(
 scoring_path = os.path.join(os.path.dirname(
     __file__), '..','data/score_db.json')
 
-
 def get_scores():
   # Kick off timer here to continuously loop through KOTH endpoints for flags
   Timer(5, scores_cron).start()
@@ -19,12 +18,12 @@ def scores_cron():
     rf = open(target_paths, 'r')
     try:
       file = rf.read()
-      res = json.loads(file)
+      targets = json.loads(file)
 
-      for target in res:
+      for target in targets:
         if target[:2] == 'KO':
-          URL = res[target]['path']
-          points = res[target]['score']
+          URL = targets[target]['path']
+          points = targets[target]['score']
           # poll the game machine for flag
           try:
             res = requests.get(url=URL)
