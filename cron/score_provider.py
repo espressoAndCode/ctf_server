@@ -1,18 +1,23 @@
 from threading import Timer
 import os, json, requests, re
-
+from requests.exceptions import ConnectionError
 
 target_paths = os.path.join(
     os.path.dirname(__file__),'..' , 'data/target_db.json')
 scoring_path = os.path.join(os.path.dirname(
     __file__), '..','data/score_db.json')
-print("scoring path: ", scoring_path)
+
 
 def get_scores():
+  # Kick off timer here to continuously loop through KOTH endpoints for flags
+  Timer(5, scores_cron).start()
 
+
+def scores_cron():
   updates = []
   if (os.path.exists(target_paths)):
-    with open(target_paths, 'r') as rf:
+    rf = open(target_paths, 'r')
+    try:
       file = rf.read()
       res = json.loads(file)
 
@@ -21,39 +26,37 @@ def get_scores():
           URL = res[target]['path']
           points = res[target]['score']
           # poll the game machine for flag
-          res = requests.get(url=URL)
-          body = res.text
+          try:
+            res = requests.get(url=URL)
+            body = res.text
+          # parse the 'res' data here to get player info
+            player = parse_koth_flag(body)
+            if (player != ''):
+              updates.append([player, target, points])
+          except ConnectionError:
+            pass
 
-          print("res - ", res.text)
-        # parse the 'res' data here to get player info
-          player = parse_koth_flag(body)
-          if (player != ''):
-            updates.append([player, target, points])
-      if len(updates) > 0:
-        post(updates)
-
-
-      Timer(5, get_scores).start()
+        if len(updates) > 0:
+          post(updates)
+    finally:
+      rf.close()
 
 
 def post(updates):
-  print("updates: ", updates)
   new_scores = ''
-  with open(scoring_path, 'r') as rf:
+  rf = open(scoring_path, 'r')
+  try:
     file = rf.read()
     if len(file) > 0:
       # file exists with data
       current_score = json.loads(file)
       for i in updates:
         if i[0] in current_score.keys():
-          print("Key found")
           score = 0
           player_obj = current_score[i[0]]['KO'][1:]
-          print("player_obj: ", player_obj)
           for j in player_obj:
             found = False
             if j[0] == i[1]: #a score for this machine already exists for this player
-              print('exists')
               j[1] += 1
               score = i[2] * j[1]
               found = True
@@ -61,34 +64,24 @@ def post(updates):
           if found == False:
             player_obj.append([i[1], i[2], 1])
             score = i[2]
-
           current_score[i[0]]['KO'][0] = score
-          # print(current_score[i[0]]['KO'][0])
+        else: #new player
+          current_score[i[0]] = {'KO': [i[2], [i[1], i[2], 1]]}
+
       new_scores = json.dumps(current_score)
-
-
-
-    else:
-      pass #score_db does not exist or is empty - need to create and append updates
-
-
-    print("current score = ", current_score)
-    write_scores_to_file(new_scores)
-
-
+      write_scores_to_file(new_scores)
+  finally:
+    rf.close()
 
 
 def write_scores_to_file(scores):
-    with open(scoring_path, 'w') as wf:
-      wf.write(scores)
+  try:
+    wf = open(scoring_path, 'w')
+    wf.write(scores)
+  finally:
+    wf.close()
 
 
 def parse_koth_flag(body):
-  # iterate through the endpoints
-  # get the html
   team = re.search(r'<koth>(.*?)</koth>', body).group(1)
-  print("Team: ", team)
   return team
-
-
-# get_scores()

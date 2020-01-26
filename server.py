@@ -8,6 +8,7 @@ from routes.scores import Scores
 
 app = Flask(__name__)
 CORS(app)
+
 app.config['DEBUG'] = True
 api = Api(app)
 
