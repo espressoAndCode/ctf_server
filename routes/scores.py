@@ -1,6 +1,6 @@
 from flask_restful import Resource
 import os, json
-import cron.score_provider as sp
+import cron.ko_score_provider as sp
 
 
 class Scores(Resource):

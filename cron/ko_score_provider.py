@@ -2,8 +2,8 @@ from threading import Timer
 import os, json, requests, re
 from requests.exceptions import ConnectionError
 
-target_paths = os.path.join(
-    os.path.dirname(__file__),'..' , 'data/target_db.json')
+ko_target_path = os.path.join(
+    os.path.dirname(__file__),'..' , 'data/ko_target_db.json')
 scoring_path = os.path.join(os.path.dirname(
     __file__), '..','data/score_db.json')
 
@@ -14,8 +14,8 @@ def get_scores():
 
 def scores_cron():
   updates = []
-  if (os.path.exists(target_paths)):
-    rf = open(target_paths, 'r')
+  if (os.path.exists(ko_target_path)):
+    rf = open(ko_target_path, 'r')
     try:
       file = rf.read()
       targets = json.loads(file)
