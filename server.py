@@ -4,7 +4,8 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 from json import dumps
 
-from routes.scores import Scores
+from routes.ko_routes import Scores
+from routes.jeopardy_routes import JeopardyRoutes
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,7 @@ api = Api(app)
 
 #### ROUTES ####
 api.add_resource(Scores, '/scores')
+api.add_resource(JeopardyRoutes, '/jeopardy')
 
 
 if __name__ == '__main__':
