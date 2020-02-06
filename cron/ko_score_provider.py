@@ -8,7 +8,7 @@ scoring_path = os.path.join(os.path.dirname(
     __file__), '..','data/score_db.json')
 
 def get_scores():
-  # Kick off timer here to continuously loop through KOTH endpoints for flags
+    # Kick off timer here to continuously loop through KOTH endpoints for flags
   Timer(5, scores_cron).start()
 
 
@@ -84,3 +84,4 @@ def write_scores_to_file(scores):
 def parse_koth_flag(body):
   team = re.search(r'<koth>(.*?)</koth>', body).group(1)
   return team
+
