@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
-import os
-import json
+import os, json
+import cron.je_score_provider as jesp
 
 
 class JeopardyRoutes(Resource):
@@ -25,8 +25,19 @@ class JeopardyRoutes(Resource):
   def post(self):
     data = request.get_json(force=True)
     print("POST: ", data)
-    # if (os.path.exists(self.score_file)):
-    #   with open(score_file, 'w+') as writefile:
-    #     writefile.write(json.dumps(data))
+    if (os.path.exists(self.score_file)):
+      with open(score_file, 'r') as rfile:
+        pass
+        # Check if there is already a score for this player/flag
+        # if so, reply "Already have this flag"
+        # if not, call the je_score_provider.write_scores_to_file method
+
+
+
+
+
+
+
+        writefile.write(json.dumps(data))
     res = "Success"
     return res

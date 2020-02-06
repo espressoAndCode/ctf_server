@@ -1,5 +1,9 @@
 from threading import Timer
-import os, json, requests, re
+import os
+import json
+import requests
+import re
+import fcntl
 from requests.exceptions import ConnectionError
 
 ko_target_path = os.path.join(
