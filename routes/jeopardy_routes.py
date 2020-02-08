@@ -24,20 +24,13 @@ class JeopardyRoutes(Resource):
 
   def post(self):
     data = request.get_json(force=True)
-    print("POST: ", data)
-    if (os.path.exists(self.score_file)):
-      with open(score_file, 'r') as rfile:
-        pass
-        # Check if there is already a score for this player/flag
-        # if so, reply "Already have this flag"
-        # if not, call the je_score_provider.write_scores_to_file method
+    res = jesp._post(data)
 
 
 
 
 
 
-
-        writefile.write(json.dumps(data))
-    res = "Success"
+        # writefile.write(json.dumps(data))
+    # res = "Success"
     return res

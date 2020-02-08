@@ -2,5 +2,17 @@
   "KO001": {
     "score": 5,
     "path": "http://127.0.0.1:9000/index.html"
+  },
+  "KO007": {
+    "score": 20,
+    "path": "http://127.0.0.1:9001/index.html"
+  },
+  "KO008": {
+    "score": 50,
+    "path": "http://127.0.0.1:9002/index.html"
+  },
+  "KO009": {
+    "score": 10,
+    "path": "http://127.0.0.1:9003/index.html"
   }
 }

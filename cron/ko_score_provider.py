@@ -70,6 +70,8 @@ def post(updates):
             score = i[2]
           current_score[i[0]]['KO'][0] += score
         else: #new player
+          # current_score[i[0]]['KO'] = {[i[2], [i[1], 1]]}
+
           current_score[i[0]] = {'KO': [i[2], [i[1], 1]]}
       new_scores = json.dumps(current_score)
       write_scores_to_file(new_scores)
