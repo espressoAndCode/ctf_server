@@ -14,6 +14,7 @@ scoring_path = os.path.join(os.path.dirname(
 def _post(updates):
   ret_msg = 'error'
   valid = False
+  dupe = False
   new_scores = ''
   rf = open(scoring_path, 'r')
 
@@ -30,27 +31,25 @@ def _post(updates):
 
           player_obj = current_score[updates["team"]]['JE'][1:]
           print("JE player_obj: ", player_obj)
-          # JE player_obj:  [['JE001', 5], ['JE002', 5]]
           for item in player_obj:
             if item[0] == updates["id"]:
+              dupe = True
               ret_msg = "Duplicate"
               break
+          if dupe == False:
+            # test for correct answer
+            points = check_correct(updates["answer"], updates["id"])
+            if ( points != False):
+              # correct
+              print("points: ", points)
+              current_score[updates["team"]]["JE"][0] += points
+              current_score[updates["team"]]["JE"].append([updates["id"], points])
+              valid = True
+              ret_msg = "Success"
             else:
-              # test for correct answer
-              points = check_correct(updates["answer"], updates["id"])
-              if ( points != False):
-                # correct
-                print("points: ", points)
-                current_score[updates["team"]]["JE"][0] += points
-                current_score[updates["team"]]["JE"].append([updates["id"], points])
-                valid = True
-                ret_msg = "Success"
-                break
-              else:
-                # incorrect
-                ret_msg = "Incorrect"
+              # incorrect
+              ret_msg = "Incorrect"
         else: #first JE score
-          print("First JE score")
           points = check_correct(updates["answer"], updates["id"])
           if (points != False):
             current_score[updates["team"]]["JE"] = [points, [updates["id"], points]]
@@ -59,11 +58,20 @@ def _post(updates):
           else:
               ret_msg = "Incorrect"
 
+      else: #new team on scoreboard
+        points = check_correct(updates["answer"], updates["id"])
+        if (points != False):
+          current_score[updates["team"]]= {"JE": [
+            points, [updates["id"], points]]}
+          valid = True
+          ret_msg = "Success"
+        else:
+            ret_msg = "Incorrect"
+
     if valid:
       new_scores = json.dumps(current_score)
       print("new scores", new_scores)
       write_scores_to_file(new_scores)
-
 
   finally:
     # write_scores_to_file('test')
