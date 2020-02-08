@@ -5,12 +5,5 @@
     "instructions": "Solve this crypto problem: PNCGHER GUR SYNT",
     "hint": "ROT13",
     "solution": "CAPTURE THE FLAG"
-  },
-    "JE002": {
-    "name": "Challenge 2",
-    "score": 5,
-    "instructions": "Solve this crypto problem: 123456",
-    "hint": "Password",
-    "solution": "Insecure"
   }
 }
