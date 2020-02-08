@@ -78,9 +78,6 @@ def _post(updates):
     rf.close()
     return ret_msg
 
-
-
-
 def write_scores_to_file(scores):
   print("got to write")
   try:
@@ -89,8 +86,6 @@ def write_scores_to_file(scores):
     print("scores written")
   finally:
     wf.close()
-
-
 
 def check_correct(answer, id):
   is_correct = False

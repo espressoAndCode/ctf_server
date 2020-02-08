@@ -62,7 +62,7 @@ If you don't serve these test sites prior to starting the main server or if the 
 
 ## Jeopardy
 
-This section is a work in progress.
+The Jeopardy section of this CTF consists of a series of questions about different topics. The player must solve the challenge and enter the answer into the form field. In order to receive credit, the answer given must *exactly* match the solution field on the game server. The player can make unlimited attempts without penalty, but can only receive points once for each challenge. An optional help field is available to the player at no penalty cost.
 
 #### Jeopardy Challenge Format
 

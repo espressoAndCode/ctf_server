@@ -57,21 +57,22 @@ def post(updates):
       for i in updates:
         if i[0] in current_score.keys():
           score = 0
-          player_obj = current_score[i[0]]['KO'][1:]
-          found = False
-          for j in player_obj:
-            if j[0] == i[1]: #a score for this flag already exists for this player
-              j[1] += 1
+          if "KO" in current_score[i[0]].keys(): # has a prev KO score
+            player_obj = current_score[i[0]]['KO'][1:]
+            found = False
+            for j in player_obj:
+              if j[0] == i[1]: #a score for this flag already exists for this player
+                j[1] += 1
+                score = i[2]
+                found = True
+                break
+            if found == False:
+              current_score[i[0]]['KO'].append([i[1], 1])
               score = i[2]
-              found = True
-              break
-          if found == False:
-            current_score[i[0]]['KO'].append([i[1], 1])
-            score = i[2]
-          current_score[i[0]]['KO'][0] += score
+            current_score[i[0]]['KO'][0] += score
+          else: #first KO score for this player
+            current_score[i[0]]["KO"] = [i[2], [i[1], 1]]
         else: #new player
-          # current_score[i[0]]['KO'] = {[i[2], [i[1], 1]]}
-
           current_score[i[0]] = {'KO': [i[2], [i[1], 1]]}
       new_scores = json.dumps(current_score)
       write_scores_to_file(new_scores)
