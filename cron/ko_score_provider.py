@@ -6,6 +6,8 @@ import re
 import fcntl
 from requests.exceptions import ConnectionError
 
+KO_POLLING_INTERVAL=20
+
 ko_target_path = os.path.join(
     os.path.dirname(__file__),'..' , 'data/ko_target_db.json')
 scoring_path = os.path.join(os.path.dirname(
@@ -13,7 +15,7 @@ scoring_path = os.path.join(os.path.dirname(
 
 def get_scores():
     # Kick off timer here to continuously loop through KOTH endpoints for flags
-  Timer(5, scores_cron).start()
+  Timer(KO_POLLING_INTERVAL, scores_cron).start()
 
 
 def scores_cron():
@@ -23,7 +25,6 @@ def scores_cron():
     try:
       file = rf.read()
       targets = json.loads(file)
-
       for target in targets:
         if target[:2] == 'KO':
           URL = targets[target]['path']
@@ -38,9 +39,8 @@ def scores_cron():
               updates.append([player, target, points])
           except ConnectionError:
             pass
-
-        if len(updates) > 0:
-          post(updates)
+      if len(updates) > 0:
+        post(updates)
     finally:
       rf.close()
 
@@ -53,29 +53,28 @@ def post(updates):
     if len(file) > 0:
       # file exists with data
       current_score = json.loads(file)
+      print("current score: ", current_score)
       for i in updates:
         if i[0] in current_score.keys():
           score = 0
           player_obj = current_score[i[0]]['KO'][1:]
+          found = False
           for j in player_obj:
-            found = False
-            if j[0] == i[1]: #a score for this machine already exists for this player
+            if j[0] == i[1]: #a score for this flag already exists for this player
               j[1] += 1
-              score = i[2] * j[1]
+              score = i[2]
               found = True
               break
           if found == False:
-            player_obj.append([i[1], i[2], 1])
+            current_score[i[0]]['KO'].append([i[1], 1])
             score = i[2]
-          current_score[i[0]]['KO'][0] = score
+          current_score[i[0]]['KO'][0] += score
         else: #new player
-          current_score[i[0]] = {'KO': [i[2], [i[1], i[2], 1]]}
-
+          current_score[i[0]] = {'KO': [i[2], [i[1], 1]]}
       new_scores = json.dumps(current_score)
       write_scores_to_file(new_scores)
   finally:
     rf.close()
-
 
 def write_scores_to_file(scores):
   try:
@@ -83,7 +82,6 @@ def write_scores_to_file(scores):
     wf.write(scores)
   finally:
     wf.close()
-
 
 def parse_koth_flag(body):
   team = re.search(r'<koth>(.*?)</koth>', body).group(1)
