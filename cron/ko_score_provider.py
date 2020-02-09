@@ -53,7 +53,6 @@ def post(updates):
     if len(file) > 0:
       # file exists with data
       current_score = json.loads(file)
-      print("current score: ", current_score)
       for i in updates:
         if i[0] in current_score.keys():
           score = 0

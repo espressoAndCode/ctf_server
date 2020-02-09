@@ -30,7 +30,6 @@ def _post(updates):
         if "JE" in current_score[updates["team"]].keys():
 
           player_obj = current_score[updates["team"]]['JE'][1:]
-          print("JE player_obj: ", player_obj)
           for item in player_obj:
             if item[0] == updates["id"]:
               dupe = True
@@ -41,7 +40,6 @@ def _post(updates):
             points = check_correct(updates["answer"], updates["id"])
             if ( points != False):
               # correct
-              print("points: ", points)
               current_score[updates["team"]]["JE"][0] += points
               current_score[updates["team"]]["JE"].append([updates["id"], points])
               valid = True
@@ -70,7 +68,6 @@ def _post(updates):
 
     if valid:
       new_scores = json.dumps(current_score)
-      print("new scores", new_scores)
       write_scores_to_file(new_scores)
 
   finally:
@@ -79,11 +76,9 @@ def _post(updates):
     return ret_msg
 
 def write_scores_to_file(scores):
-  print("got to write")
   try:
     wf = open(scoring_path, 'w')
     wf.write(scores)
-    print("scores written")
   finally:
     wf.close()
 
@@ -94,12 +89,7 @@ def check_correct(answer, id):
     flags = check_flags.read()
     all_flags = json.loads(flags)
     for flag in all_flags:
-      print("flag: ", flag)
-      print("id: ", id)
       if flag == id:
-        print("match")
-        print("solution: ", all_flags[flag]["solution"])
-        print("answer: ", answer)
         if all_flags[flag]["solution"] == answer:
           is_correct = all_flags[flag]["score"]
           break
