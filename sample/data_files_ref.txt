@@ -1,0 +1,31 @@
+The examples below can be used to rebuild the files if the originals become corrupted.
+
+
+"data/je_target_db.json":
+
+{
+  "JE001": {
+    "name": "Easy crypto challenge",
+    "score": 5,
+    "instructions": "Solve this crypto problem: PNCGHER GUR SYNT",
+    "hint": "ROT13",
+    "solution": "CAPTURE THE FLAG"
+  }
+}
+
+____________
+
+"data/ko_target_db.json":
+
+{
+  "KO001": {
+    "score": 5,
+    "path": "http://127.0.0.1:9000/index.html"
+  }
+}
+
+____________
+
+"data/score_db.json":
+
+{}

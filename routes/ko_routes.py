@@ -2,7 +2,6 @@ from flask_restful import Resource
 import os, json
 import cron.ko_score_provider as sp
 
-
 class Scores(Resource):
 
   fn = os.path.abspath('data/score_db.json')

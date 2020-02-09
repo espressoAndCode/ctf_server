@@ -81,8 +81,12 @@ The challenges are stored in the `data/je_target_db.json` file in `JSON` for for
 ```
 
 ## Scoring
-There is no database associated with this application. All scoring data is written to the file `data/score_db.json`. This will be updates continuously during the game by the `ko_score_provider` process and by posts from player input to Jeopardy challenges. It would be a good idea to periodically back this file up.
+There is no database associated with this application. All scoring data is written to the file `data/score_db.json`. This will be updates continuously during the game by the `ko_score_provider` process and by posts from player input to Jeopardy challenges. During game play it would be a good idea to periodically back this file up.
 At the start of the game the `data/score_db.json` file should be an empty object:
 ```
 {}
 ```
+
+#### Data Files
+
+Generally speaking, files on the `data/` path should not be pushed to Github with actual data, lest the whole game be given away. There is a duplicate directory called `data_starter/` with three clean files that will assist in setting up actual games. The game files must be relocated to the `data/` path for actual play.
