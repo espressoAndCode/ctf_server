@@ -6,7 +6,7 @@ import re
 import fcntl
 from requests.exceptions import ConnectionError
 
-KO_POLLING_INTERVAL=20
+KO_POLLING_INTERVAL=90
 
 ko_target_path = os.path.join(
     os.path.dirname(__file__),'..' , 'data/ko_target_db.json')
